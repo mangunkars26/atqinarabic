@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="datetime">
+        <span id="masehi"></span> | <span id="hijri"></span>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+        function displayDateTime() {
+          var currentTime = new Date();
+          var hours = currentTime.getHours();
+          var minutes = currentTime.getMinutes();
+          var seconds = currentTime.getSeconds();
+      
+          // Tambahkan nol di depan jika nilai jam, menit, atau detik kurang dari 10
+          hours = (hours < 10 ? "0" : "") + hours;
+          minutes = (minutes < 10 ? "0" : "") + minutes;
+          seconds = (seconds < 10 ? "0" : "") + seconds;
+      
+          // Format tanggal Masehi
+          var dateMasehi = currentTime.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      
+          // Dapatkan tanggal Hijriah
+          var dateHijri = getHijriDate(currentTime);
+      
+          // Tampilkan waktu dan tanggal di elemen HTML
+          $('#masehi').html(dateMasehi + ' ' + hours + ':' + minutes + ':' + seconds);
+          $('#hijri').html(dateHijri);
+        }
+      
+        // Fungsi untuk mendapatkan tanggal Hijriah
+        function getHijriDate(currentTime) {
+          var months = [
+            "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Jumada al-awwal", "Jumada al-thani", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"
+          ];
+      
+          var dateHijri = window.HijriDate(currentTime);
+      
+          var hijriMonth = months[dateHijri.month - 1];
+          var hijriDate = dateHijri.day + ' ' + hijriMonth + ' ' + dateHijri.year;
+      
+          return hijriDate;
+        }
+      
+        // Panggil fungsi untuk menampilkan waktu dan tanggal setiap detik
+        $(document).ready(function() {
+          displayDateTime();
+          setInterval(displayDateTime, 1000);
+        });
+      </script>
+      
+</body>
+</html>
